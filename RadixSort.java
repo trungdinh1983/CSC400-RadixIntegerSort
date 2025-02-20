@@ -1,57 +1,106 @@
 // RadixSort.java
+/**
+ * This class implements the Radix Sort algorithm to sort an array of integers.
+ * Radix Sort works by sorting numbers digit by digit, starting from the least
+ * significant digit (rightmost)
+ * to the most significant digit (leftmost).
+ */
 public class RadixSort {
-  // Method to get maximum value in arr[]
-  private static int getMax(int arr[]) {
-    int max = arr[0];
-    for (int i = 1; i < arr.length; i++) {
-      if (arr[i] > max)
-        max = arr[i];
-    }
-    return max;
-  }
 
-  // A function to do counting sort of arr[] according to
-  // the digit represented by exp.
-  private static void countSort(int arr[], int exp) {
-    int n = arr.length;
-    int output[] = new int[n];
-    int count[] = new int[10];
+  /**
+   * Finds the largest number in the array to determine how many digits we need to
+   * process
+   * 
+   * @param arrayToSort The array we want to find the maximum number from
+   * @return The largest number in the array
+   */
+  private static int findLargestNumber(int[] arrayToSort) {
+    // Start by assuming the first number is the largest
+    int largestNumber = arrayToSort[0];
 
-    // Store count of occurrences in count[]
-    for (int i = 0; i < n; i++)
-      count[(arr[i] / exp) % 10]++;
-
-    // Change count[i] so that count[i] now contains
-    // actual position of this digit in output[]
-    for (int i = 1; i < 10; i++)
-      count[i] += count[i - 1];
-
-    // Build the output array
-    for (int i = n - 1; i >= 0; i--) {
-      output[count[(arr[i] / exp) % 10] - 1] = arr[i];
-      count[(arr[i] / exp) % 10]--;
+    // Go through each number in the array
+    for (int currentIndex = 1; currentIndex < arrayToSort.length; currentIndex++) {
+      // If we find a bigger number, update largestNumber
+      if (arrayToSort[currentIndex] > largestNumber) {
+        largestNumber = arrayToSort[currentIndex];
+      }
     }
 
-    // Copy the output array to arr[], so that arr[] now
-    // contains sorted numbers according to current digit
-    for (int i = 0; i < n; i++)
-      arr[i] = output[i];
+    return largestNumber;
   }
 
-  // The main function to sort arr[] using Radix Sort
-  public static void radixSort(int arr[]) {
-    // Find the maximum number to know number of digits
-    int m = getMax(arr);
+  /**
+   * Sorts the array based on a specific digit position
+   * 
+   * @param arrayToSort   The array we want to sort
+   * @param digitPosition Which digit position we're currently sorting (1s, 10s,
+   *                      100s, etc.)
+   */
+  private static void sortByDigit(int[] arrayToSort, int digitPosition) {
+    // Create arrays we need for sorting
+    int arrayLength = arrayToSort.length;
+    int[] resultArray = new int[arrayLength]; // Will hold the sorted numbers
+    int[] digitCount = new int[10]; // Counts how many times each digit (0-9) appears
 
-    // Do counting sort for every digit
-    for (int exp = 1; m / exp > 0; exp *= 10)
-      countSort(arr, exp);
+    // Step 1: Count how many times each digit appears
+    for (int i = 0; i < arrayLength; i++) {
+      // Extract the current digit we're looking at
+      int currentDigit = (arrayToSort[i] / digitPosition) % 10;
+      // Increment the count for this digit
+      digitCount[currentDigit]++;
+    }
+
+    // Step 2: Calculate the correct positions for each digit
+    // Add each count to the previous counts
+    for (int digit = 1; digit < 10; digit++) {
+      digitCount[digit] += digitCount[digit - 1];
+    }
+
+    // Step 3: Build the sorted array
+    // Go through the original array from right to left
+    for (int i = arrayLength - 1; i >= 0; i--) {
+      // Get the current digit
+      int currentDigit = (arrayToSort[i] / digitPosition) % 10;
+      // Place the number in its correct position
+      resultArray[digitCount[currentDigit] - 1] = arrayToSort[i];
+      // Decrease the count for this digit
+      digitCount[currentDigit]--;
+    }
+
+    // Step 4: Copy the sorted results back to the original array
+    for (int i = 0; i < arrayLength; i++) {
+      arrayToSort[i] = resultArray[i];
+    }
+
+    // Print the array after sorting by this digit
+    System.out.println("\nAfter sorting by digit position " + digitPosition + ":");
+    printArray(arrayToSort);
   }
 
-  // Utility function to print an array
-  public static void printArray(int arr[]) {
-    for (int i = 0; i < arr.length; i++)
-      System.out.print(arr[i] + " ");
-    System.out.println();
+  /**
+   * The main radix sort method that sorts the entire array
+   * 
+   * @param arrayToSort The array we want to sort
+   */
+  public static void radixSort(int[] arrayToSort) {
+    // Find the largest number to know how many digits we need to process
+    int largestNumber = findLargestNumber(arrayToSort);
+
+    // Sort for each digit position (1s, 10s, 100s, etc.)
+    for (int digitPosition = 1; largestNumber / digitPosition > 0; digitPosition *= 10) {
+      sortByDigit(arrayToSort, digitPosition);
+    }
+  }
+
+  /**
+   * Prints the array in a readable format
+   * 
+   * @param arrayToPrint The array we want to display
+   */
+  public static void printArray(int[] arrayToPrint) {
+    for (int number : arrayToPrint) {
+      System.out.print(number + " ");
+    }
+    System.out.println(); // Print a new line after the array
   }
 }
