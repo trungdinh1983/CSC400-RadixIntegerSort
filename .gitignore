@@ -11,7 +11,9 @@
 .mtj.tmp/
 
 # Package Files #
+# Ignore all JAR files except in specific directories
 *.jar
+!*/lib/*.jar
 !lib/junit-platform-console-standalone-1.8.2.jar
 
 # Virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
