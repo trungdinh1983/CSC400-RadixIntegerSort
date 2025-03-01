@@ -21,6 +21,20 @@ This project implements the Radix Sort algorithm for sorting integers in Java, a
 - `RadixSortTest.java`: JUnit test cases for the Radix Sort implementation
 - `lib/`: Directory containing JUnit dependencies
 
+## Running the Program
+
+### Compiling
+
+```bash
+javac RadixSort.java
+```
+
+### Running Radix Sort
+
+```bash
+java RadixSort
+```
+
 ## Running Tests
 
 ### Using Command Line
@@ -28,12 +42,12 @@ This project implements the Radix Sort algorithm for sorting integers in Java, a
 1. Compile the source files:
 
    ```bash
-   javac -cp .:lib/* RadixSort.java RadixSortTest.java
+   javac -cp .:lib/junit-platform-console-standalone-1.8.2.jar RadixSort.java RadixSortTest.java
    ```
 
 2. Run the tests:
    ```bash
-   java -cp .:lib/* org.junit.jupiter.api.Launcher RadixSortTest
+   java -jar lib/junit-platform-console-standalone-1.8.2.jar --select-class RadixSortTest
    ```
 
 ### IDE Setup (IntelliJ IDEA / Eclipse)
@@ -48,13 +62,14 @@ This project implements the Radix Sort algorithm for sorting integers in Java, a
   - Filename: `junit-platform-console-standalone-1.8.2.jar`
   - Located in the `lib/` directory
 
-### Dependency Details
-
-The project uses a single JAR file for JUnit testing, which includes both the Jupiter API and Engine.
-
 ## Algorithm Details
 
-Radix Sort is a non-comparative sorting algorithm that sorts integers by processing individual digits. It works by sorting numbers digit by digit, from the least significant digit to the most significant digit.
+Radix Sort is a non-comparative sorting algorithm that sorts integers by processing individual digits. Key characteristics include:
+
+- Sorts numbers digit by digit
+- Starts from the least significant digit
+- Moves to the most significant digit
+- Stable sorting algorithm for integers
 
 ## Time Complexity
 
@@ -67,10 +82,23 @@ Radix Sort is a non-comparative sorting algorithm that sorts integers by process
 
 - Works only with non-negative integers
 - Performance may vary with extremely large numbers
+- Requires additional memory for sorting
+
+## Example Usage
+
+```java
+int[] numbers = {170, 45, 75, 90, 802, 24, 2, 66};
+RadixSort.radixSort(numbers);
+RadixSort.printArray(numbers);
+```
 
 ## Contributing
 
-Feel free to open issues or submit pull requests to improve the implementation.
+Suggestions and improvements are welcome:
+
+- Fork the repository
+- Create a new branch for your feature
+- Submit a pull request
 
 ## License
 
@@ -80,7 +108,7 @@ This is an educational project created for academic purposes.
 
 - Free to use for educational and personal learning
 - Not intended for commercial use
-- Attribution to the original author (you) is appreciated if used or referenced
+- Attribution to the original author is appreciated
 
 ### Academic Integrity
 
